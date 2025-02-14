@@ -1,0 +1,38 @@
+# sumstats_noMIG.R, renamed sumstats.R
+# corrected 19APR2023, edited for new R9 endo 30MAY2023
+require(GenomicSEM)
+
+
+working_directory <-"/path/to/working/directory/"
+
+chr<-1:22
+for(i in 1:length(chr)){
+c1<-chr[i]
+filename1<-paste0(working_directory,sprintf("new_filelist_noMIG_chr%s",c1))
+files<-read.table(filename1)
+files<-c(files$V1)
+ref= "reference.1000G.maf.0.005.txt.gz"
+# CWP, IBS,HA, LBP, TMJ, ENDO
+trait.names<-
+c("CWP","IBS_Neff","HA","LBP_Neff","TMJ", "ENDO")
+se.logit=c(F,F,F,T,F,T)
+OLS=    c(F,F,F,F,F,F)
+linprob= c(T,T,T,F,T,F)
+info.filter=.6
+maf.filter=0.01
+N=NULL
+betas=NULL
+
+COPC_sumstats <-sumstats(files=files,ref=ref,trait.names=trait.names,se.logit=se.logit,OLS=OLS,linprob=linprob,N=NULL,betas=NULL,info.filter=info.filter,maf.filter=maf.filter,keep.indel=FALSE,parallel=FALSE,cores=NULL)
+filename2<-sprintf("/output/directory/sumstats_chr%s.RData", c1)
+save(COPC_sumstats, file=filename2)
+###
+
+rm(filename1)
+rm(filename2)
+
+rename1<-sprintf("sumstats_chr%s.log",c1)
+file.rename("CWP_IBS_Neff_HA_LBP_Neff_TMJ_ENDO_sumstats.log",rename1)
+rm(c1)
+rm(rename1)
+}
