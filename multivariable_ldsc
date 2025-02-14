@@ -1,0 +1,27 @@
+require(GenomicSEM)
+#vector of munged summary statisitcs from prev step - should all have XXX.sumstats.gz format
+traits<-c("CWP.sumstats.gz","IBS_Neff.sumstats.gz","HA.sumstats.gz","LBP_Neff.sumstats.gz","TMJ.sumstats.gz", "ENDO.sumstats.gz")
+
+#enter sample prevalence of .5 to reflect which traits were munged using the sum of effective sample size
+# CWP | IBS | HA | LBP | TMJ | ENDO
+# sample prev for new endo 15088/122652=0.123
+sample.prev<-c(0.0285, 0.5,0.5,0.5,0.0005, 0.123)
+
+#vector of population prevalences - from literature usually
+population.prev<-c(0.01,0.1,0.158,0.075,0.3,0.1)
+
+#the folder of LD scores
+ld<-"/path/to/eur_w_ld_chr"
+
+#the folder of LD weights [typically the same as folder of LD scores]
+wld<-"/path/to/eur_w_ld_chr"
+
+#name the traits
+trait.names<-c("CWP","IBS_Neff","HA","LBP_Neff","TMJ", "ENDO")
+
+#run LDSC
+LDSCoutput<-ldsc(traits=traits,sample.prev=sample.prev,population.prev=population.prev,ld=ld,wld=wld,trait.names=trait.names)
+
+#optional command to save the output as a .RData file for later use
+file1<-paste0(getwd(),"/LDSCoutput.RData")
+save(LDSCoutput,file=file1)
