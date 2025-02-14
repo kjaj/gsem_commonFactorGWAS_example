@@ -1,0 +1,17 @@
+chr<-1:22 
+rm(i)
+for(i in 1:length(chr)){
+c1<-chr[i]
+f1<-c(sprintf("CWP_GWAS_EU_ANCESTRY_UKB_rsid_maf_chr%s",c1),
+
+sprintf("IBS_GCST90016564_buildGRCh37_Neff_chr%s",c1),
+sprintf("headache2_2017-10-12.allele_labels_chr%s",c1),
+sprintf("phenotype_1_GWA_metal_result_Geisinger_eMERGE1.TBL.rsids.maf_chr%s",c1),
+sprintf("TMJ_GCST90044107_buildGRCh37_maf_chr%s", c1),
+sprintf("finngen_R9_N14_ENDOMETRIOSIS_NOS_betaFix_hg19_preMunge_chr%s", c1))
+filename<-sprintf("new_filelist_noMIG_chr%s",c1)
+write.table(f1, file=filename, row.names=F, col.names=F, quote=F, sep="\t")
+rm(c1)
+rm(f1)
+rm(filename)
+}
