@@ -1,0 +1,17 @@
+require(GenomicSEM)
+args <- commandArgs(trailingOnly = TRUE)
+wd<-"/path/to/working/directory/"
+
+load(paste0(wd,args[1]))
+print("loaded sumstats!")
+load(paste0(wd,"LDSCoutput.RData"))
+print("loaded ldsc output!")
+
+CPUS <- strtoi(Sys.getenv("SLURM_CPUS_PER_TASK"))
+CORES<-CPUS-1
+
+#run the multivariate GWAS using parallel processing
+COPC_factor <- commonfactorGWAS(covstruc = LDSCoutput, SNPs = COPC_sumstats, estimation = "DWLS", cores = CORES, toler=F,SNPSE = FALSE, parallel = T,GC="standard",MPI=FALSE,smooth_check=TRUE)
+
+filename<-paste0(wd,"COPC_chr",COPC_sumstats$CHR[1], ".RData")
+save(COPC_factor, file=filename)
