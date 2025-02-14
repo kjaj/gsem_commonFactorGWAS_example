@@ -1,0 +1,30 @@
+require(data.table)
+dat_list<-list()
+
+c0<-c(1:22)
+rm(i)
+for(i in 1:22){
+c1<-c0[i]
+filename<-sprintf("COPC_chr%s.RData",c1)
+load(filename)
+dat_list[[i]]<-COPC_factor
+rm(filename)
+rm(c1)
+rm(COPC_factor)
+}
+
+require(plyr)
+dat2<-rbindlist(dat_list)
+#restrict to MAF of 40% and 10%
+dat3<-subset(dat2, dat2$MAF <= .4 & dat2$MAF >= .1)
+#calculate expected sample size (N_hat)
+N_hat<-mean(1/((2*dat3$MAF*(1-dat3$MAF))*dat3$se_c^2))
+# 
+
+save(dat2,N_hat,file="COPC_allChrom_30MAY2023.RData")
+
+write.table(dat2, "COPC_allChrom_30MAY2023_for_fuma", row.names=F, col.names=T, quote=F, sep="\t")
+
+dat_munge<-dat2[,c(1:6,11:14)]
+colnames(dat_munge)[7:10]<-c("BETA","SE","Z","P")
+write.table(dat_munge, "COPC_preMunge", row.names=F, col.names=T, quote=F, sep="\t")
