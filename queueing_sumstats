@@ -1,0 +1,10 @@
+#!/bin/bash
+#SBATCH --partition=XXX
+#SBATCH --cpus-per-task=XXX
+#SBATCH --mem=XXX
+#SBATCH -t 800:00
+
+SECONDS=0
+ml R
+Rscript sumstats.R
+echo "Elapsed Time (using \$SECONDS): $SECONDS seconds"
