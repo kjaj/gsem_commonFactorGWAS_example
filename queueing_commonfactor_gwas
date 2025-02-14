@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --partition=XXX
+#SBATCH --cpus-per-task=XXX
+#SBATCH --mem=XXX
+#SBATCH -t 800:00
+
+SECONDS=0
+
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1
+ml R
+for file in {1..12}
+do
+Rscript cf_gwas_bychr.R "sumstats_chr$file.RData"
+echo "Elapsed Time (using \$SECONDS): $SECONDS seconds"
+done
