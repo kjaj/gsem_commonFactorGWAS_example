@@ -1,0 +1,7 @@
+# cf_noSNP.R
+require(GenomicSEM)
+load("LDSCoutput.RData")
+
+COPC_factor <- commonfactor(covstruc=LDSCoutput,estimation="DWLS")
+
+save(COPC_factor, file="COPC_commonFactor_noSNPs.RData")
